@@ -1,7 +1,8 @@
 import React from "react";
-import { MainLayout } from "../component/mainLayout/MainLayout";
+import { MainLayout } from "../components/mainLayout/MainLayout";
 import { Container, Form, Button, Row, Col } from "react-bootstrap/";
-import { CustomField } from "../component/mainLayout/customField/CustomField";
+import { CustomField } from "../components/mainLayout/customField/CustomField";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const fields = [
@@ -28,7 +29,7 @@ const Login = () => {
         <Row className="login-page shadow-lg">
           <Col className="bg-primary d-none d-md-flex  direction-column justify-content-center align-items-center ">
             {" "}
-            <div className="info  p-2 pt-5 ">
+            <div className="info text-white p-2 pt-5 ">
               <h1>Welcome back!</h1>
               <p className="mt-5">
                 Login to your account and manage your daily transactions
@@ -51,6 +52,9 @@ const Login = () => {
                   </Button>
                 </div>
               </Form>
+              <div className="text-end">
+                Are you new here? <Link to="/register">Register Now</Link>
+              </div>
             </div>
           </Col>
         </Row>
