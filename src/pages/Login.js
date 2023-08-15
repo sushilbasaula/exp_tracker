@@ -1,10 +1,33 @@
-import React from "react";
+import React, { useRef } from "react";
 import { MainLayout } from "../components/mainLayout/MainLayout";
 import { Container, Form, Button, Row, Col } from "react-bootstrap/";
 import { CustomField } from "../components/mainLayout/customField/CustomField";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { loginUser } from "../helpers/axiosHelpers";
+import { toast } from "react-toastify";
 
 const Login = () => {
+  const navigate = useNavigate();
+
+  const emailRef = useRef("");
+  const pinRef = useRef("");
+
+  const handleOnSubmit = async (e) => {
+    e.preventDefault();
+
+    const loginObj = {
+      email: emailRef.current.value,
+      pin: pinRef.current.value,
+    };
+    const { status, message, result } = await loginUser(loginObj);
+    toast[status](message);
+
+    if (status === "success" && result?._id) {
+      sessionStorage.setItem("user", JSON.stringify(result));
+      localStorage.setItem("user", JSON.stringify(result));
+      navigate("/dashboard");
+    }
+  };
   const fields = [
     {
       label: "Email",
@@ -12,7 +35,7 @@ const Login = () => {
       name: "email",
       type: "email",
       required: true,
-      //   forwaredref: emailRef,
+      forwaredref: emailRef,
     },
     {
       label: "Pin",
@@ -20,7 +43,7 @@ const Login = () => {
       name: "pin",
       type: "password",
       required: true,
-      //   forwaredref: pinRef,
+      forwaredref: pinRef,
     },
   ];
   return (
@@ -42,7 +65,7 @@ const Login = () => {
                 <i class="fa-solid fa-file-pen"></i> Login{" "}
               </h2>
               <hr />
-              <Form>
+              <Form onSubmit={handleOnSubmit}>
                 {fields.map((item, i) => (
                   <CustomField key={i} {...item} />
                 ))}

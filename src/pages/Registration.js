@@ -4,7 +4,7 @@ import { Container, Form, Button, Row, Col } from "react-bootstrap/";
 import { CustomField } from "../components/mainLayout/customField/CustomField";
 import { toast } from "react-toastify";
 import { postUser } from "../helpers/axiosHelpers";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const initialState = {
   name: "",
@@ -14,6 +14,8 @@ const initialState = {
 };
 const Registration = () => {
   const [form, setForm] = useState(initialState);
+
+  const navigate = useNavigate();
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -38,6 +40,8 @@ const Registration = () => {
     }
     const { status, message } = await postUser(rest);
     toast[status](message);
+
+    status === "success" && navigate("/");
   };
 
   const fields = [
@@ -106,7 +110,7 @@ const Registration = () => {
                 ))}
                 <div className="d-grid">
                   <Button variant="primary" type="submit">
-                    Login
+                    Register
                   </Button>
                 </div>
               </Form>
